@@ -3,20 +3,23 @@ import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore, enableIndexedDbPersistence } from "firebase/firestore";
 import { getStorage, type Storage } from "firebase/storage";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyCL_1DCvO5ckxisdpwxs4RUbJbDiaZxoA8",
+  authDomain: "today-2-3f7eb.firebaseapp.com",
+  projectId: "today-2-3f7eb",
+  storageBucket: "today-2-3f7eb.firebasestorage.app",
+  messagingSenderId: "315948206777",
+  appId: "1:315948206777:web:cfbf8044d2ca54da182968", // Corrected appId
+  measurementId: "G-F4FP11ZBK8"
 };
 
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
 let db: Firestore | null = null;
 let storage: Storage | null = null;
+let analytics = null;
 let isFirebaseConfigured = false;
 
 // This check ensures that Firebase is only initialized on the client side,
@@ -28,7 +31,8 @@ if (typeof window !== "undefined" && Object.values(firebaseConfig).every(Boolean
   auth = getAuth(app);
   db = getFirestore(app);
   storage = getStorage(app);
-  
+  analytics = getAnalytics(app);
+
   enableIndexedDbPersistence(db)
     .catch((err) => {
       if (err.code == 'failed-precondition') {
@@ -39,4 +43,4 @@ if (typeof window !== "undefined" && Object.values(firebaseConfig).every(Boolean
     });
 }
 
-export { app, auth, db, storage, firebaseConfig, isFirebaseConfigured };
+export { app, auth, db, storage, analytics, firebaseConfig, isFirebaseConfigured };
