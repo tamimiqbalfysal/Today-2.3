@@ -1,17 +1,27 @@
-import { ApexCloudLogo } from '@/components/icons';
-
-export default function Footer() {
-  return (
-    <footer className="border-t">
-      <div className="container flex flex-col items-center justify-between py-8 sm:flex-row">
-        <div className="flex items-center gap-2">
-          <ApexCloudLogo className="h-6 w-6" />
-          <span className="font-headline font-bold">ApexCloud</span>
-        </div>
-        <p className="mt-4 text-sm text-muted-foreground sm:mt-0">
-          &copy; {new Date().getFullYear()} ApexCloud. All rights reserved.
-        </p>
-      </div>
-    </footer>
-  );
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

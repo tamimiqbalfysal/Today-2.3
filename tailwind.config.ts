@@ -9,10 +9,12 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'primary-gradient': 'linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)))',
+      },
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Space Grotesk', 'sans-serif'],
-        code: ['monospace'],
+        sans: ['Inter', 'sans-serif'],
+        headline: ['Inter', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',

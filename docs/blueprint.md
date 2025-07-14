@@ -1,20 +1,18 @@
-# **App Name**: ApexCloud Landing
+# **App Name**: GitGrab
 
 ## Core Features:
 
-- Headline Display: Headline Section: Display a concise headline and a subheadline detailing the value proposition for enterprise businesses.
-- Product Listing: Top Products Showcase: Showcase key products with clear pricing information in an easy-to-understand grid format.
-- Testimonial Section: Customer Testimonials: Feature customer testimonials with company logos to build trust and credibility.
-- Consultation CTA: Call-to-Action (CTA): Prominent "Request a Consultation" button, repeated across the page.
-- Contact Form: Contact Form: Collect details of user who wishes to book consultation.
-- AI Headline Tool: AI-Powered Headline Suggestion Tool: Uses an AI model to analyze provided business values and propose compelling headlines to A/B test with.
+- Repository URL Input: Input field for GitHub repository URL.
+- Clone Trigger: Button to trigger the git clone command on the provided URL.
+- Clone Status: Status indicator displaying clone progress (e.g., 'Cloning...', 'Clone complete', 'Error').
+- Repo Validation: AI-powered validation to pre-check that the URL refers to a valid, accessible, cloneable, repo, displayed using a tool.
 
 ## Style Guidelines:
 
-- Primary color: Deep Indigo (#3F51B5) to convey trust and reliability.
-- Background color: Very light grayish-blue (#F0F4FF). This provides a clean and modern backdrop without being stark white.
-- Accent color: Electric Purple (#7C4DFF), slightly lighter and more saturated than the primary, draws attention to key elements and CTAs without overpowering the overall design.
-- Headline font: 'Space Grotesk', sans-serif. Body text font: 'Inter', sans-serif.
-- Clean and minimalist layout with ample white space to provide a professional and trustworthy impression. Content should be organized into clear sections.
-- Use simple, modern icons (outline style) to represent products and features. Icons should use the accent color (#7C4DFF).
-- Subtle fade-in effects for page elements as the user scrolls, enhancing engagement without distracting from the core content.
+- Primary color: Dark grayish blue (#5c6bc0) to evoke reliability and trustworthiness, without being a cliche.
+- Background color: Very dark grayish blue (#263238). It maintains the dark theme with minimal saturation.
+- Accent color: Vibrant yellow (#fbc02d), offset from the primary by around 30 degrees, to highlight interactive elements.
+- Body and headline font: 'Inter', a grotesque-style sans-serif font that provides a neutral, objective feel suitable for a utility application.
+- Simple, monochrome icons for indicating clone status and feedback messages.
+- Clean, centered layout for input and status display to improve UX.
+- Subtle loading animation during cloning process to indicate activity.
