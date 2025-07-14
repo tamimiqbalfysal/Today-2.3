@@ -185,13 +185,13 @@ export default function TodayPage() {
       } catch (error: any) {
           console.error("Error adding post:", error);
           
-          if (error.code === 'storage/unauthorized' || error.code === 'permission-denied') {
+          if (error.code === 'storage/unauthorized' || error.code === 'storage/unknown') {
             toast({
                 id: 'storage-permission-error',
                 variant: "destructive",
-                title: "File Upload Failed",
-                description: `Action Required: Your Firebase Storage security rules are preventing file uploads. Please go to the Firebase Console, navigate to Storage > Rules, and update your rules to allow writes for authenticated users.`,
-                duration: 12000
+                title: "File Upload Failed: Permission Denied",
+                description: `Your Firebase Storage security rules are blocking uploads. Go to your Firebase Console > Storage > Rules and ensure they allow writes for authenticated users.`,
+                duration: 15000
             });
           } else if (error.code?.startsWith('storage/')) {
              toast({
