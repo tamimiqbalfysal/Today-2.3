@@ -119,8 +119,18 @@ export default function TodayPage() {
       try {
           await deleteDoc(doc(db, 'posts', postId));
           if (mediaUrl) {
-              const storageRef = ref(storage, mediaUrl);
-              await deleteObject(storageRef);
+              try {
+                const storageRef = ref(storage, mediaUrl);
+                await deleteObject(storageRef);
+              } catch (storageError: any) {
+                  // If the file doesn't exist, we can ignore the error, as the goal is to remove it.
+                  if (storageError.code === 'storage/object-not-found') {
+                      console.warn("Media file not found in storage, but deleting post document anyway.");
+                  } else {
+                      // For other storage errors, we should still notify the user.
+                      throw storageError;
+                  }
+              }
           }
           toast({ title: 'Success', description: 'Post deleted successfully.' });
       } catch (error: any) {
@@ -128,9 +138,6 @@ export default function TodayPage() {
           let description = "An unexpected error occurred while deleting the post.";
           if (error.code === 'permission-denied') {
               description = "You do not have permission to delete this post.";
-          }
-          if (error.code === 'storage/object-not-found') {
-              console.warn("Media file not found in storage, but deleting post document anyway.");
           } else if (error.code?.startsWith('storage/')) {
               description = "Could not delete the media file associated with the post.";
           }
