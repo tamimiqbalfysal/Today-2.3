@@ -57,11 +57,13 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
       setContent("");
       handleRemoveFile();
     } catch (error) {
-      // Error is logged and toasted by the parent component.
-      // This catch block ensures the UI state is reset regardless.
-      console.error("Submission failed:", error);
+      // The parent component (`today/page.tsx`) is responsible for
+      // logging the error and showing a toast notification.
+      // This catch block is here to ensure the `finally` block executes
+      // even when an error is thrown by `onAddPost`.
     } finally {
-      // This will run after try or catch, ensuring the button is always re-enabled.
+      // This block will run regardless of whether the `try` block
+      // succeeded or failed, ensuring the form is always re-enabled.
       setIsSubmitting(false);
     }
   };
