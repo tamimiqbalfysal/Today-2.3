@@ -32,7 +32,6 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
         } else if (selectedFile.type.startsWith('video/')) {
             setFileType('video');
         } else {
-            // Reset if the file type is not supported
             handleRemoveFile();
         }
     }
@@ -54,13 +53,15 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
     setIsSubmitting(true);
     try {
       await onAddPost(content, file);
+      // Reset form on success
       setContent("");
       handleRemoveFile();
     } catch (error) {
-      // The error is now handled and displayed by the parent component (TodayPage).
-      // We just need to catch it here to ensure the loading state is reset.
-      console.error("Error submitting post from form:", error);
+      // Error is logged and toasted by the parent component.
+      // This catch block ensures the UI state is reset regardless.
+      console.error("Submission failed:", error);
     } finally {
+      // This will run after try or catch, ensuring the button is always re-enabled.
       setIsSubmitting(false);
     }
   };

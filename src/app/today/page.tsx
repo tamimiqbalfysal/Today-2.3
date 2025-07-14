@@ -123,11 +123,9 @@ export default function TodayPage() {
                 const storageRef = ref(storage, mediaUrl);
                 await deleteObject(storageRef);
               } catch (storageError: any) {
-                  // If the file doesn't exist, we can ignore the error, as the goal is to remove it.
                   if (storageError.code === 'storage/object-not-found') {
                       console.warn("Media file not found in storage, but deleting post document anyway.");
                   } else {
-                      // For other storage errors, we should still notify the user.
                       throw storageError;
                   }
               }
@@ -185,13 +183,13 @@ export default function TodayPage() {
       } catch (error: any) {
           console.error("Error adding post:", error);
           
-          if (error.code === 'storage/unauthorized' || error.code === 'storage/unknown') {
+          if (error.code === 'storage/unauthorized') {
             toast({
                 id: 'storage-permission-error',
                 variant: "destructive",
                 title: "File Upload Failed: Permission Denied",
-                description: `Your Firebase Storage security rules are blocking uploads. Go to your Firebase Console > Storage > Rules and ensure they allow writes for authenticated users.`,
-                duration: 15000
+                description: `CRITICAL: Your Firebase Storage security rules are blocking uploads. Go to your Firebase Console > Storage > Rules and ensure they allow writes for authenticated users. Example: "allow write: if request.auth != null;"`,
+                duration: 20000,
             });
           } else if (error.code?.startsWith('storage/')) {
              toast({
@@ -215,7 +213,7 @@ export default function TodayPage() {
              });
           }
           
-          // IMPORTANT: Re-throw the error so the form knows the submission failed.
+          // IMPORTANT: Re-throw the error so the form component knows the submission failed.
           throw error;
       }
   };
