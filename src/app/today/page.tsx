@@ -184,7 +184,6 @@ export default function TodayPage() {
         });
       } catch (error: any) {
           console.error("Error adding post:", error);
-          let description = "An unexpected error occurred while creating your post.";
           
           if (error.code === 'storage/unauthorized' || error.code === 'permission-denied') {
             toast({
@@ -212,7 +211,7 @@ export default function TodayPage() {
              toast({
                 variant: "destructive",
                 title: "Could Not Create Post",
-                description: description,
+                description: "An unexpected error occurred while creating your post.",
              });
           }
           
