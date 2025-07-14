@@ -152,33 +152,18 @@ export default function TodayPage() {
   const handleAddPost = async (content: string, file: File | null) => {
       if (!user || !db || (!content.trim() && !file)) return;
       
-      let uniqueStorageToastId = 'storage-error';
-
       try {
         let mediaURL: string | undefined = undefined;
         let mediaType: 'image' | 'video' | undefined = undefined;
 
         if (file && storage) {
-          try {
-            const storageRef = ref(storage, `posts/${user.uid}/${Date.now()}_${file.name}`);
-            const snapshot = await uploadBytes(storageRef, file);
-            mediaURL = await getDownloadURL(snapshot.ref);
-            if (file.type.startsWith('image/')) {
-              mediaType = 'image';
-            } else if (file.type.startsWith('video/')) {
-              mediaType = 'video';
-            }
-          } catch (storageError: any) {
-              const description = `Action Required: Your Firebase Storage security rules are preventing file uploads. Please go to the Firebase Console, navigate to Storage > Rules, and update your rules to allow writes for authenticated users. For example: "allow write: if request.auth != null && request.resource.size < 5 * 1024 * 1024;"`;
-              toast({
-                  id: uniqueStorageToastId,
-                  variant: "destructive",
-                  title: "Could Not Upload File",
-                  description: description,
-                  duration: 12000
-              });
-              // IMPORTANT: Re-throw the error so the form knows the submission failed.
-              throw storageError;
+          const storageRef = ref(storage, `posts/${user.uid}/${Date.now()}_${file.name}`);
+          const snapshot = await uploadBytes(storageRef, file);
+          mediaURL = await getDownloadURL(snapshot.ref);
+          if (file.type.startsWith('image/')) {
+            mediaType = 'image';
+          } else if (file.type.startsWith('video/')) {
+            mediaType = 'video';
           }
         }
 
@@ -198,20 +183,39 @@ export default function TodayPage() {
           description: "Your story has been successfully shared.",
         });
       } catch (error: any) {
-          if (error.code && error.code.startsWith('storage/')) {
-            // This error was already handled and toasted above.
-            console.error("Storage Error:", error);
-          } else {
-             console.error("Firestore Error:", error);
-             const description = `Action Required: Your Firestore security rules are preventing post creation. Please go to the Firebase Console, navigate to Firestore Database > Rules, and update your rules to allow writes to the 'posts' collection for authenticated users. For example: "allow create: if request.auth != null;"`;
+          console.error("Error adding post:", error);
+          let description = "An unexpected error occurred while creating your post.";
+          
+          if (error.code === 'storage/unauthorized' || error.code === 'permission-denied') {
+            toast({
+                id: 'storage-permission-error',
+                variant: "destructive",
+                title: "File Upload Failed",
+                description: `Action Required: Your Firebase Storage security rules are preventing file uploads. Please go to the Firebase Console, navigate to Storage > Rules, and update your rules to allow writes for authenticated users.`,
+                duration: 12000
+            });
+          } else if (error.code?.startsWith('storage/')) {
              toast({
+                variant: "destructive",
+                title: "Storage Error",
+                description: `Could not upload file: ${error.message}`,
+             });
+          } else if (error.code === 'permission-denied') {
+            toast({
                  id: 'firestore-error',
                  variant: "destructive",
                  title: "Could Not Save Post",
-                 description: description,
+                 description: "Permission denied. Please check your Firestore security rules in the Firebase Console.",
                  duration: 12000
              });
+          } else {
+             toast({
+                variant: "destructive",
+                title: "Could Not Create Post",
+                description: description,
+             });
           }
+          
           // IMPORTANT: Re-throw the error so the form knows the submission failed.
           throw error;
       }
